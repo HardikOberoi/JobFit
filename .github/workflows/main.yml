@@ -3,8 +3,6 @@ name: Deploy JobFit Website
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -16,10 +14,6 @@ jobs:
       pages: write
       id-token: write
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,37 +21,20 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '18'
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install and build frontend
+      - name: Install dependencies
         run: |
           cd frontend
-          npm ci
+          npm install
+
+      - name: Build project
+        run: |
+          cd frontend
           npm run build
 
-      - name: Install Python dependencies (optional)
-        run: |
-          if [ -f backend/requirements.txt ]; then
-            python -m pip install --upgrade pip
-            pip install -r backend/requirements.txt
-          fi
-
-      - name: Setup Pages
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: actions/configure-pages@v4
-
-      - name: Upload to GitHub Pages
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./frontend/build
-
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/build
