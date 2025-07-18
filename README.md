@@ -2,9 +2,8 @@
 
 JobFit is an AI-powered tool that helps job seekers analyze their resumes against job descriptions, prepare for interviews, and create professional application materials.
 
-**Live Application:** [https://hxndev.github.io/JobFit/](https://hxndev.github.io/JobFit/)
+**Live Application:** 
 
-![JobFit Banner](https://i.ibb.co/tJG1GVN/jobfit-banner.png)
 
 ## Features
 
@@ -41,7 +40,7 @@ JobFit is an AI-powered tool that helps job seekers analyze their resumes agains
 
 ## How to Use
 
-1. **Visit** the live application at [https://hxndev.github.io/JobFit/](https://hxndev.github.io/JobFit/)
+1. **Visit** the live application 
 2. **Provide a Google Gemini API Key** when prompted (this is used to power the AI features)
 3. **Upload your resume** (PDF or TXT format)
 4. **Enter job details** for the positions you're interested in
@@ -76,18 +75,8 @@ JobFit uses Google's Gemini AI to power its features. You'll need to provide you
 - Google Generative AI API
 - PyPDF2 for PDF processing
 
-## Contribute
 
-Have suggestions or feedback? Feel free to:
-
-- [Open an issue](https://github.com/HxnDev/JobFit/issues)
-- [Connect on LinkedIn](https://www.linkedin.com/in/hassan-shahzad-2a6617212/)
-- Send feature requests to hassanshahzad.dev@gmail.com
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
 
-© 2025 JobFit | All rights reserved
+
