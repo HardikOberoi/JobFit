@@ -35,7 +35,7 @@ jobs:
           cd frontend
           npm ci
 
-      - name: Run frontend build
+      - name: Build frontend
         run: |
           cd frontend
           npm run build
@@ -43,11 +43,10 @@ jobs:
       - name: Run backend tests
         run: |
           cd backend
-          # Add your backend tests here, for example:
+          echo "🚨 You can add actual test commands here (e.g., pytest)"
           # pytest
-          echo "Backend tests step (customize as needed)"
 
-      - name: Upload frontend production build
+      - name: Upload frontend build artifact
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
@@ -78,11 +77,11 @@ jobs:
           name: frontend-dist
           path: ./frontend/build
 
-      - name: Setup Pages
+      - name: Set up GitHub Pages
         uses: actions/configure-pages@v3
 
-      - name: Upload to GitHub Pages
-        uses: actions/upload-pages-artifact@v2
+      - name: Upload site to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./frontend/build
 
