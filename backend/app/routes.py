@@ -14,7 +14,6 @@ from .learning_recommender import generate_detailed_learning_plan, generate_lear
 from .motivational_message import generate_motivational_letter
 from .resume_analyzer import analyze_resume, generate_resume_review
 
-
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -24,7 +23,6 @@ api_bp = Blueprint("api", __name__, url_prefix="/api")
 
 # Maximum file size (2MB)
 MAX_FILE_SIZE = 2 * 1024 * 1024  # 2MB in bytes
-
 
 def validate_api_key(api_key: str) -> bool:
     """
@@ -46,7 +44,6 @@ def validate_api_key(api_key: str) -> bool:
 
     # Additional validation can be added here
     return True
-
 
 def get_api_key_from_request():
     """
@@ -72,7 +69,6 @@ def get_api_key_from_request():
 
     return None
 
-
 def configure_gemini_with_key(api_key: str) -> bool:
     """
     Configure the Gemini API with the provided key.
@@ -90,7 +86,6 @@ def configure_gemini_with_key(api_key: str) -> bool:
     except Exception as e:
         logger.error(f"Error configuring Gemini API: {str(e)}")
         return False
-
 
 def check_file_size(file) -> bool:
     """
@@ -110,7 +105,6 @@ def check_file_size(file) -> bool:
 
     return file_size <= MAX_FILE_SIZE
 
-
 @api_bp.before_request
 def before_request():
     """Middleware to check API key for all requests except health check"""
@@ -123,17 +117,16 @@ def before_request():
     if not api_key:
         return jsonify({"success": False, "error": "Missing or invalid API key"}), 401
 
-
 @api_bp.route("/health", methods=["GET"])
 def health_check():
-    """Health check endpoint"""
+    """Health check endpoint for Render deployment"""
     return jsonify(
         {
             "status": "healthy",
-            "version": "1.0.0",
+            "message": "JobFit API is running successfully",
+            "version": "1.0.1",
         }
     ), 200
-
 
 @api_bp.route("/analyze", methods=["POST"])
 def analyze():
@@ -206,7 +199,6 @@ def analyze():
         logger.error(f"Resume analysis failed: {error_msg}")
         return jsonify(result), 400
 
-
 @api_bp.route("/ats-check", methods=["POST"])
 def ats_check():
     """Endpoint to analyze resume for ATS compatibility"""
@@ -245,7 +237,6 @@ def ats_check():
 
     except Exception as e:
         return jsonify({"success": False, "error": f"Error processing resume: {str(e)}"}), 400
-
 
 @api_bp.route("/ats-optimize", methods=["POST"])
 def ats_optimize():
@@ -291,7 +282,6 @@ def ats_optimize():
     except Exception as e:
         return jsonify({"success": False, "error": f"Error processing resume: {str(e)}"}), 400
 
-
 @api_bp.route("/learning-recommendations", methods=["POST"])
 def learning_recommendations():
     """Endpoint to get learning recommendations for skills"""
@@ -311,7 +301,6 @@ def learning_recommendations():
     result = generate_learning_recommendations(data["skills"])
     return jsonify(result), 200 if result.get("success", False) else 400
 
-
 @api_bp.route("/learning-plan", methods=["POST"])
 def learning_plan():
     """Endpoint to get a detailed learning plan for a skill"""
@@ -330,7 +319,6 @@ def learning_plan():
 
     result = generate_detailed_learning_plan(data["skill"])
     return jsonify(result), 200 if result.get("success", False) else 400
-
 
 @api_bp.route("/cover-letter", methods=["POST"])
 def generate_letter():
@@ -359,7 +347,6 @@ def generate_letter():
 
     result = generate_cover_letter(job_details, custom_instruction, language)
     return jsonify(result), 200 if result.get("success", False) else 400
-
 
 @api_bp.route("/motivational-letter", methods=["POST"])
 def motivational_letter():
@@ -396,7 +383,6 @@ def motivational_letter():
     result = generate_motivational_letter(job_details)
     return jsonify(result), 200 if result.get("success", False) else 400
 
-
 @api_bp.route("/email-reply", methods=["POST"])
 def email_reply():
     """Endpoint to generate an email reply"""
@@ -421,7 +407,6 @@ def email_reply():
 
     result = generate_email_reply(data["email_content"], tone, language)
     return jsonify(result), 200 if result.get("success", False) else 400
-
 
 @api_bp.route("/review-resume", methods=["POST"])
 def review_resume():
@@ -487,7 +472,6 @@ def review_resume():
     except Exception as e:
         return jsonify({"success": False, "error": f"Error processing resume: {str(e)}"}), 400
 
-
 @api_bp.route("/supported-languages", methods=["GET"])
 def get_supported_languages():
     """Endpoint to get supported languages for cover letter generation"""
@@ -502,13 +486,11 @@ def get_supported_languages():
     ]
     return jsonify({"success": True, "languages": supported_languages}), 200
 
-
 @api_bp.route("/email-tones", methods=["GET"])
 def get_email_tones():
     """Endpoint to get supported email tones"""
     email_tones = [{"code": "professional", "name": "Professional"}, {"code": "friendly", "name": "Friendly"}, {"code": "formal", "name": "Formal"}]
     return jsonify({"success": True, "tones": email_tones}), 200
-
 
 @api_bp.route("/interview-questions", methods=["POST"])
 def interview_questions():
@@ -533,7 +515,6 @@ def interview_questions():
     result = generate_interview_questions(job_details)
     return jsonify(result), 200 if result.get("success", False) else 400
 
-
 @api_bp.route("/interview-preparation", methods=["POST"])
 def interview_preparation():
     """Endpoint to generate comprehensive interview preparation materials"""
@@ -556,7 +537,6 @@ def interview_preparation():
     logger.info(f"Generating interview preparation materials for {job_details['job_title']} at {job_details['company_name']}")
     result = generate_interview_preparation_materials(job_details)
     return jsonify(result), 200 if result.get("success", False) else 400
-
 
 @api_bp.route("/evaluate-answers", methods=["POST"])
 def evaluate_answers():
